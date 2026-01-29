@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<title>Yield</title>
+
+<style>
+body {
+  font-family: Arial, sans-serif;
+  max-width: 420px;
+  margin: auto;
+  padding: 20px;
+}
+
+input, select, button {
+  width: 100%;
+  padding: 8px;
+  margin-top: 6px;
+}
+
+button {
+  cursor: pointer;
+}
+
+.result {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.pass { background: #c8f7c5; }   /* เขียว */
+.warn { background: #fff3b0; }   /* เหลือง */
+.fail { background: #f7c5c5; }   /* แดง */
+</style>
+</head>
+
+<body>
+
+<h2>Yield</h2>
+
+<label>เลือกหน่วย</label>
+<select id="unit">
+  <option value="1">กรัม (g)</option>
+  <option value="1000">กิโลกรัม (kg)</option>
+</select>
+
+<label>น้ำหนักก่อนผสม</label>
+<input type="number" id="before" step="0.01">
+
+<label>น้ำหนักหลังผสม</label>
+<input type="number" id="after" step="0.01">
+
+<button onclick="calculateYield()">คำนวณ</button>
+
+<div id="result" class="result">
+  <p>Yield: <b id="yield">-</b></p>
+  <p>Loss: <b id="loss">-</b></p>
+  <p>สถานะ: <b id="status">-</b></p>
+</div>
+
+<script>
+function calculateYield() {
+  let unit = Number(document.getElementById("unit").value);
+  let before = Number(document.getElementById("before").value) * unit;
+  let after = Number(document.getElementById("after").value) * unit;
+
+  if (before <= 0 || after <= 0) {
+    alert("กรุณากรอกน้ำหนักให้ถูกต้อง");
+    return;
+  }
+
+  let yieldPercent = (after / before) * 100;
+  let lossPercent = 100 - yieldPercent;
+
+  document.getElementById("yield").innerText =
+    yieldPercent.toFixed(2) + " %";
+  document.getElementById("loss").innerText =
+    lossPercent.toFixed(2) + " %";
+
+  let box = document.getElementById("result");
+  let status = document.getElementById("status");
+
+  box.className = "result";
+
+  if (lossPercent < 0.5) {
+    box.classList.add("pass");
+    status.innerText = "ผ่าน";
+  } 
+  else if (lossPercent < 1) {
+    box.classList.add("warn");
+    status.innerText = "เฝ้าระวัง";
+  } 
+  else {
+    box.classList.add("fail");
+    status.innerText = "ไม่ผ่าน";
+  }
+}
+</script>
+
+</body>
+</html>
