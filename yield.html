@@ -84,8 +84,28 @@ function calculateYield() {
 
   if (yieldPercent > 100) {
     box.classList.add("warn");
-    status.innerText = "น้ำหนักเพิ่ม";
+    status.innerText = "น้ำหนักเพิ่ม (ตรวจสอบการชั่ง)";
   }
-  else if (lossPercent < 0.5) {
+  else if (lossPercent <= 0.5) {
     box.classList.add("pass");
-    status.innerText
+    status.innerText = "ผ่าน (Loss ≤ 0.5%)";
+  }
+  else if (lossPercent <= 2) {
+    box.classList.add("warn");
+    status.innerText = "เฝ้าระวัง (Loss 0.5–2%)";
+  }
+  else {
+    box.classList.add("fail");
+    status.innerText = "ไม่ผ่าน (Loss > 2%)";
+  }
+}
+
+function resetForm() {
+  document.getElementById("before").value = "";
+  document.getElementById("after").value = "";
+  document.getElementById("yield").innerText = "-";
+  document.getElementById("loss").innerText = "-";
+  document.getElementById("status").innerText = "-";
+  document.getElementById("result").className = "result";
+}
+</script>
